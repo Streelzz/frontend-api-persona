@@ -29,7 +29,7 @@ const About = () => {
           
           <div><strong>Repositorios Git</strong></div>
           <div><a href="https://github.com/Streelzz/backend-api-persona">https://github.com/Streelzz/backend-api-persona</a></div>
-          <div><a href="https://github.com/Streelzz/backend-api-persona">https://github.com/Streelzz/backend-api-persona</a></div>
+          <div><a href="https://github.com/Streelzz/frontend-api-persona">https://github.com/Streelzz/frontend-api-persona</a></div>
           <br></br>
           <div><strong>Repositorios Docker</strong></div>
           <div><a href="https://hub.docker.com/repository/docker/streelz/image-api-persona">https://hub.docker.com/repository/docker/streelz/image-api-persona</a></div>
