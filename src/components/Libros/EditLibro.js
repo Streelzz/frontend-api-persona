@@ -1,5 +1,8 @@
 import React, { useState, useEffect } from "react";
-import { Link, useHistory, useParams } from "react-router-dom";
+import {Link, useHistory, useParams } from "react-router-dom";
+import {Card, Form, Button, Col,Table} from 'react-bootstrap';
+import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
+import {faSave,faTimes,faTrash} from '@fortawesome/free-solid-svg-icons';
 import LibrosService from "../../services/LibrosService";
 import AutoresService from "../../services/AutoresService";
 
@@ -19,14 +22,21 @@ const EditLibro = () => {
   };
 
   const onInputChangeAutores = e => {
-    const idA=parseInt(e.target.value);
+    const idA = parseInt(e.target.value);
+    console.log(idA)
     const index = autoresList.findIndex((autor) => {
-
         return( autor.id === idA);
     })
-
-    libro.autores.push(autoresList[index]);
-    setLibro({...libro,libro});
+    const rep = libro.autores.findIndex((autor) => {
+      return( autor.id === idA);
+  })
+  console.log(rep.type , rep)
+    if(!isNaN(idA)){
+      if(rep<0){
+        libro.autores.push(autoresList[index]);
+        setLibro({...libro,libro});
+      }     
+    } 
   };
 
   useEffect(() => {
@@ -57,122 +67,98 @@ const EditLibro = () => {
   };
   
   return (
-    <div className="container">
-      <div className="container py-4">
-        <h4 className="text-center mb-4">EDITAR LIBRO</h4>
-        <form>
-        <div class="row g-3 align-items-center form-group">
-                  <div class="col-auto">
-                    <label for="titulo" class="col-form-label">Titulo: </label>
-                  </div>
-                  <div class="col-auto">
-                      <input
-                          type="text"
-                          className="form-control form-control"
-                          placeholder="Ingrese el nombre"
-                          id="titulo"
-                          name="titulo"
-                          value={titulo}
-                          onChange={e => onInputChange(e)}
-                        />
-                  </div>
-            </div>
-            <div class="row g-3 align-items-center form-group">
-                  <div class="col-auto">
-                    <label for="fecha" class="col-form-label">Fecha: </label>
-                  </div>
-                  <div class="col-auto">
-                      <input
-                          type="text"
-                          className="form-control form-control"
-                          placeholder="Ingrese el nombre"
-                          id="fecha"
-                          name="fecha"
-                          value={fecha}
-                          onChange={e => onInputChange(e)}
-                        />
-                  </div>
-            </div>
-            <div class="row g-3 align-items-center form-group">
-                  <div class="col-auto">
-                    <label for="genero" class="col-form-label">Genero: </label>
-                  </div>
-                  <div class="col-auto">
-                      <input
-                          type="text"
-                          className="form-control form-control"
-                          placeholder="Ingrese el nombre"
-                          id="genero"
-                          name="genero"
-                          value={genero}
-                          onChange={e => onInputChange(e)}
-                        />
-                  </div>
-            </div>
-            <div class="row g-3 align-items-centerform-group">
-                  <div class="col-auto">
-                    <label for="paginas" class="col-form-label">Paginas: </label>
-                  </div>
-                  <div class="col-auto">
-                      <input
-                          type="text"
-                          className="form-control form-control"
-                          placeholder="Ingrese el nombre"
-                          id="paginas"
-                          name="paginas"
-                          value={paginas}
-                          onChange={e => onInputChange(e)}
-                        />
-                  </div>
-            </div>
-          <br></br>
-          <h4 class="text-center">AUTORES</h4>
-          <br></br>
-          <div className="form-group">
-                <td>
-                <select class="form-control form-control" name="autores" onChange={(e) => onInputChangeAutores(e)}>
-                              <option selected>AGREGAR AUTOR</option>
-                              {autoresList.map((autor) => (                                                  
-                              <option value={autor.id}>{autor.nombre} {autor.apellido}</option>                       
-                              ))}                          
-                </select>
-                </td>
-                <td>
-                
-                </td>
-          </div>
-
-        <table class="table border shadow">
-          <thead class="thead-dark">
-            <tr>
-              <th scope="col">NOMBRE</th>
-              <th scope="col">APELLIDO</th>
-              <th scope="col">ACCION</th>
-            </tr>
-          </thead>
-          <tbody>
-              {libro.autores.map(autor => (
-                  <tr>
-                    <td>{autor.nombre}</td>
-                    <td>{autor.apellido}</td>
-                    <td>
-                    <Link
-                        class="btn btn-danger btn-sm" onClick={() => deleteAutor(autor.id)}>
-                        ELIMINAR
-                      </Link>
-                    </td>
-                  </tr>
-                ))}
-          </tbody>
-        </table>
-        <br></br>
-          <div class="text-center">           
-            <Link class="btn btn-secondary btn-sm mr-5" to={`/personas/detalle/libro/detalle/${idp}/${id}`}>CANCELAR</Link>
-            <Link class="btn btn-primary btn-sm mr-5" onClick={e => onSubmit(e)}>ACTUALIZAR</Link>
-        </div>
-        </form>  
+      <div className="py-4">
+      <Card className={"border border-dark bg-dark text-white"}>
+                    <Card.Header style={{"textAlign":"center"}}>
+                    <strong>EDITAR LIBRO</strong>
+                    </Card.Header>
+                    <Form onSubmit={e => onSubmit(e)}>
+                        <Card.Body>
+                            <Form.Row>
+                                <Form.Group as={Col} controlId="formGridTitulo">
+                                    <Form.Label>Titulo</Form.Label>
+                                    <Form.Control required autoComplete="off"
+                                        type="text" name="titulo"
+                                        value={titulo} onChange={e => onInputChange(e)}
+                                        className={"bg-dark text-white"}
+                                        placeholder="Ingrese titulo" />
+                                </Form.Group>
+                            </Form.Row>
+                            <Form.Row>
+                                <Form.Group as={Col} controlId="formGridFecha">
+                                    <Form.Label>Fecha</Form.Label>
+                                    <Form.Control required autoComplete="off"
+                                        type="text" name="fecha"
+                                        value={fecha} onChange={e => onInputChange(e)}
+                                        className={"bg-dark text-white"}
+                                        placeholder="Ingrese año" />
+                                </Form.Group>
+                            </Form.Row>  
+                            <Form.Row>                         
+                                  <Form.Group  as={Col} controlId="formGridGenero">
+                                  <Form.Label>Genero</Form.Label>
+                                  <Form.Control required autoComplete="off"
+                                        type="text" name="genero"
+                                        value={genero} onChange={e => onInputChange(e)}
+                                        className={"bg-dark text-white"}
+                                        placeholder="Ingrese genero" />
+                                </Form.Group>
+                          </Form.Row> 
+                          <Form.Row>                         
+                                  <Form.Group  as={Col} controlId="formGridPaginas">
+                                  <Form.Label>Paginas</Form.Label>
+                                  <Form.Control required autoComplete="off"
+                                        type="text" name="paginas"
+                                        value={paginas} onChange={e => onInputChange(e)}
+                                        className={"bg-dark text-white"}
+                                        placeholder="Ingrese n° de paginas" />
+                                </Form.Group>
+                          </Form.Row>
+                          <Form.Row>
+                                <Form.Group controlId="selectLocalidad">
+                                        <Form.Label>Autores:</Form.Label>
+                                        <Form.Control required autoComplete="off" as="select"
+                                        name="autores" onChange={(e) => onInputChangeAutores(e)} 
+                                        className={"bg-dark text-white"}>
+                                            <option selected>Agregar Autor</option>
+                                            {autoresList.map((autor) => (                                                  
+                                            <option value={autor.id}>{autor.nombre} {autor.apellido}</option>                       
+                                            ))}   
+                                        </Form.Control>
+                                  </Form.Group>
+                          </Form.Row>
+                          <Table bordered hover striped variant="dark">
+                          <thead class="thead-dark" style={{"textAlign":"left"}}>
+                                <tr>
+                                  <th scope="col">NOMBRE</th>
+                                  <th scope="col">APELLIDO</th>
+                                  <th scope="col">ACCION</th>
+                                </tr>
+                              </thead>
+                              <tbody>
+                                  {libro.autores.map(autor => (
+                                      <tr>
+                                        <td>{autor.nombre}</td>
+                                        <td>{autor.apellido}</td>
+                                        <td style={{"textAlign":"center"}}>
+                                        <Link
+                                            class="btn btn-danger btn-sm" onClick={() => deleteAutor(autor.id)}>
+                                            <FontAwesomeIcon icon={faTrash}/>
+                                          </Link>
+                                        </td>
+                                      </tr>
+                                    ))}
+                              </tbody>     
+                          </Table>                                  
+                        </Card.Body>
+                        <Card.Footer style={{"textAlign":"center"}}>
+                          
+                            <Link class="btn btn-danger mr-5 btn-sm" to={`/personas/detalle/libro/detalle/${idp}/${id}`}><FontAwesomeIcon icon={faTimes}/> CANCELAR</Link>
+                            <Button Button size="sm" variant="primary" type="submit"><FontAwesomeIcon icon={faSave}/> GUARDAR</Button>
+                        </Card.Footer>
+                    </Form>
+                </Card>
       </div>
-    </div>
   );
 };
 

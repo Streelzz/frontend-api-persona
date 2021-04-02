@@ -3,6 +3,9 @@ import React, { useState, useEffect } from "react";
 import { useHistory, useParams } from "react-router-dom";
 import AutoresService from "../../services/AutoresService.js";
 import { Link } from 'react-router-dom';
+import {Card, Form, Button, Col} from 'react-bootstrap';
+import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
+import {faSave,faTimes} from '@fortawesome/free-solid-svg-icons';
 
 const EditAutor = () => {
   let history = useHistory();
@@ -33,66 +36,51 @@ const EditAutor = () => {
   };
   
   return (
-    <div className="container">
-      <div className="w-100 mx-auto shadow p-5">
-        <h4 className="text-center mb-4">EDITAR AUTOR</h4>
-        <form>
-          <div class="row g-3 align-items-center">
-                  <div class="col-auto">
-                    <label for="nombre" class="col-form-label-lg">Nombre: </label>
-                  </div>
-                  <div class="col-auto">
-                      <input
-                          type="text"
-                          className="form-control form-control-lg"
-                          placeholder="Ingrese el nombre"
-                          id="nombre"
-                          name="nombre"
-                          value={nombre}
-                          onChange={e => onInputChange(e)}
-                        />
-                  </div>
-            </div>
-            <div class="row g-3 align-items-center">
-                  <div class="col-auto">
-                    <label for="apellido" class="col-form-label-lg">Apellido: </label>
-                  </div>
-                  <div class="col-auto">
-                  <input
-                          type="text"
-                          className="form-control form-control-lg"
-                          placeholder="Ingrese el apellido"
-                          id="apellido"
-                          name="apellido"
-                          value={apellido}
-                          onChange={e => onInputChange(e)}
-                        />
-                  </div>
-            </div>
-            <div class="row g-3 align-items-center">
-                  <div class="col-auto">
-                    <label for="biografia" class="col-form-label-lg">Biografia: </label>
-                  </div>
-                  <div class="col-auto w-100">
-                  <textarea 
-                          className="form-control form-control-lg" 
-                          placeholder="Ingrese la biografia" 
-                          id="biografia"
-                          name="biografia"
-                          value={biografia}
-                          onChange={e => onInputChange(e)}
-                      ></textarea>
-                  </div>
-            </div>
-          <br></br>
-          <div class="text-center">
-          <Link class="btn btn-danger mr-5 btn-sm text-center" to={`/autores/detalle/${autor.id}`}>CANCELAR</Link>
-          <Link class="btn btn-primary btn-sm" onClick={e => onSubmit(e)}>ACTUALIZAR</Link>
+    <div className="py-4">
+    <Card className={"border border-dark bg-dark text-white"}>
+                  <Card.Header style={{"textAlign":"center"}}>
+                  <strong>EDITAR AUTOR</strong>
+                  </Card.Header>
+                  <Form onSubmit={e => onSubmit(e)}>
+                      <Card.Body>
+                          <Form.Row>
+                              <Form.Group as={Col} controlId="formGridNombre">
+                                  <Form.Label>Nombre</Form.Label>
+                                  <Form.Control required autoComplete="off"
+                                      type="text" name="nombre"
+                                      value={nombre} onChange={e => onInputChange(e)}
+                                      className={"bg-dark text-white"}
+                                      placeholder="Ingrese nombre" />
+                              </Form.Group>
+                          </Form.Row>
+                          <Form.Row>
+                              <Form.Group as={Col} controlId="formGridApellido">
+                                  <Form.Label>Apellido</Form.Label>
+                                  <Form.Control required autoComplete="off"
+                                      type="text" name="apellido"
+                                      value={apellido} onChange={e => onInputChange(e)}
+                                      className={"bg-dark text-white"}
+                                      placeholder="Ingrese apellido" />
+                              </Form.Group>
+                          </Form.Row>  
+                          <Form.Row>                         
+                              <Form.Group  as={Col} controlId="formGridBiografia">
+                              <Form.Label>Biografia</Form.Label>
+                              <Form.Control as="textarea" rows={5} required autoComplete="off"
+                              type="textArea" name="biografia"
+                              value={biografia} onChange={e => onInputChange(e)}
+                              className={"bg-dark text-white"}
+                              placeholder="Ingrese biografia" />
+                             </Form.Group>
+                          </Form.Row>                                  
+                      </Card.Body>
+                      <Card.Footer style={{"textAlign":"center"}}>
+                          <Link class="btn btn-danger mr-5 btn-sm" to="/autores"><FontAwesomeIcon icon={faTimes}/> CANCELAR</Link>
+                          <Button Button size="sm" variant="primary" type="submit"><FontAwesomeIcon icon={faSave}/> GUARDAR</Button>
+                      </Card.Footer>
+                  </Form>
+              </Card>
           </div>
-        </form>
-      </div>
-    </div>
-
   );
 };
 

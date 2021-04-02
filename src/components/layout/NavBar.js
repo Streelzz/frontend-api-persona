@@ -3,9 +3,9 @@ import {React} from "react";
 import { Navbar,Nav } from 'react-bootstrap';
 const NavBar = () => {
 
-    return (
-    
-      <Navbar Navbar bg="primary" variant="dark" expand="lg">
+    return (   
+     
+      <Navbar Navbar bg="dark" variant="dark" expand="lg">
       <Navbar.Brand href="#home">App</Navbar.Brand>
       <Navbar.Toggle aria-controls="basic-navbar-nav" />
         <Navbar.Collapse id="basic-navbar-nav">
@@ -18,6 +18,8 @@ const NavBar = () => {
       </Navbar.Collapse>
     </Navbar>
 
+    
+     
     );
 };
 

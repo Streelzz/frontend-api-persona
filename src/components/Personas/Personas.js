@@ -1,6 +1,9 @@
 import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import PersonasService from "../../services/PersonasService.js";
+import {Card, Table, ButtonGroup} from 'react-bootstrap';
+import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
+import {faList, faEdit, faTrash, faEye,faPlusSquare} from '@fortawesome/free-solid-svg-icons';
 
 const Personas = () => {
   const [personas, setPersona] = useState([]);
@@ -18,50 +21,55 @@ const Personas = () => {
     loadPersonas();
   };
 
-  return (
-    <div className="container">
-      <div className="py-4">
-        <h4 class="text-center">LISTA DE PERSONAS</h4>
-        <div class="left-align"><Link class="btn btn-primary btn-sm" to="/personas/add">AGREGAR</Link></div>
-            <br></br>
-        <table class="table border shadow">
-          <thead class="thead-dark">
-            <tr>
-              <th scope="col">#</th>
-              <th scope="col">NOMBRE</th>
-              <th scope="col">APELLIDO</th>
-              <th scope="col">DOMICILIO</th>
-              <th>ACCION</th>
-            </tr>
-          </thead>
-          <tbody>
-            {personas.map((persona, index) => (
-              <tr>
-                <th scope="row">{index + 1}</th>
-                <td>{persona.nombre}</td>
-                <td>{persona.apellido}</td>
-                <td>{persona.domicilio.calle} {persona.domicilio.numero}</td>
-                <td>
-                  <Link class="btn btn-primary btn-sm mr-2" to={`/personas/detalle/${persona.id}`}>
-                    DETALLE
-                  </Link>
-                  <Link
-                    class="btn btn-warning btn-sm mr-2"
-                    to={`/personas/edit/${persona.id}`}>
-                    EDITAR
-                  </Link>
-                  <Link
-                    class="btn btn-danger btn-sm"
-                    onClick={() => deletePersona(persona.id)}>
-                    ELIMINAR
-                  </Link>
-                </td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
-      </div>
-    </div>
+  return ( 
+    
+      <Card  className="border border-dark bg-dark text-white">
+                    <Card.Header>
+                        <div style={{"float":"left"}}> 
+                            <FontAwesomeIcon icon={faList} /> <strong>Lista de Personas</strong> 
+                        </div>
+                        <div style={{"float":"right"}}>
+                        <Link to="/personas/add" className="btn btn-sm btn-primary mr-2"><FontAwesomeIcon icon={faPlusSquare} /> Agregar</Link>
+                        </div>                                     
+                    </Card.Header>
+                    <Card.Body>
+                        <Table bordered hover striped variant="dark">
+                            <thead>
+                                <tr>
+                                  <th>#</th>
+                                  <th>NOMBRE</th>
+                                  <th>APELLIDO</th>
+                                  <th>DOMICILIO</th>
+                                  <th>ACCIONES</th>
+                                </tr>
+                              </thead>
+                              <tbody>
+                                {
+                                    personas.length === 0 ?
+                                    <tr align="center">
+                                      <td colSpan="7">No hay personas.</td>
+                                    </tr> :
+                                    personas.map((persona,index) => (
+                                    <tr key={persona.id}>
+                                        <td>{index + 1}</td>
+                                        <td>{persona.nombre}</td>
+                                        <td>{persona.apellido}</td>
+                                        <td>{persona.domicilio.calle} {persona.domicilio.numero}</td>
+                                        <td>
+                                            <ButtonGroup>
+                                                <Link to={`/personas/detalle/${persona.id}`} className="btn btn-sm btn-primary mr-2"><FontAwesomeIcon icon={faEye} /></Link>                                            
+                                                <Link to={`/personas/edit/${persona.id}`} className="btn btn-sm btn-warning mr-2"><FontAwesomeIcon icon={faEdit} /></Link>
+                                                <Link class="btn btn-danger btn-sm" onClick={() => deletePersona(persona.id)}><FontAwesomeIcon icon={faTrash} /></Link>
+                                            </ButtonGroup>
+                                        </td>
+                                    </tr>
+                                    ))
+                                }
+                              </tbody>
+                        </Table>
+                    </Card.Body>
+                </Card>
+ 
   );
 };
 

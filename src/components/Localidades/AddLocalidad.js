@@ -2,6 +2,10 @@ import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import { useHistory } from "react-router-dom";
 import LocalidadesService from "../../services/LocalidadesService";
+import {Card, Form, Button, Col} from 'react-bootstrap';
+import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
+import {faSave,faTimes} from '@fortawesome/free-solid-svg-icons';
+
 const AddLocalidad = () => {
   let history = useHistory();
   const [localidad, setUser] = useState({
@@ -19,34 +23,32 @@ const AddLocalidad = () => {
     history.push("/localidades");
   };
   return (
-    <div className="container">
-      <div className="w-100 mx-auto shadow p-5">
-        <h4 className="text-center mb-4">AGREGAR</h4>
-        <form >       
-          <div class="row g-3 align-items-center">
-              <div class="col-auto">
-                <label for="denominacion" class="col-form-label">Denominacion: </label>
-              </div>
-              <div class="col-auto">
-                  <input
-                      type="text"
-                      className="form-control form-control"
-                      placeholder="Ingrese la denominacion"
-                      id="denominacion"
-                      name="denominacion"
-                      value={denominacion}
-                      onChange={e => onInputChange(e)}
-                    />
-              </div>
-        </div>
-          <br></br>
-          <div class="text-center">
-            <Link class="btn btn-danger mr-5 btn-sm" to="/localidades">CANCELAR</Link>
-            <Link class="btn btn-primary btn-sm" onClick={e => onSubmit(e)}>AGREGAR</Link>
-        </div>  
-        </form>
-      </div>
-    </div>
+    <div className="py-4">
+                <Card className={"border border-dark bg-dark text-white"}>
+                    <Card.Header style={{"textAlign":"center"}}>
+                         AGREGAR LOCALIDAD
+                    </Card.Header>
+                    <Form onSubmit={e => onSubmit(e)} id="localidad">
+                        <Card.Body>
+                            <Form.Row>
+                                <Form.Group as={Col} controlId="formGridDenominacion">
+                                    <Form.Label>Denominacion</Form.Label>
+                                    <Form.Control required autoComplete="off"
+                                        type="text" name="denominacion"
+                                        value={denominacion} onChange={e => onInputChange(e)}
+                                        className={"bg-dark text-white"}
+                                        placeholder="Ingrese denominacion" />
+                                </Form.Group>
+                            </Form.Row>                                 
+                        </Card.Body>
+                        <Card.Footer style={{"textAlign":"center"}}>
+                            <Link class="btn btn-danger mr-5 btn-sm" to="/localidades"><FontAwesomeIcon icon={faTimes}/> CANCELAR</Link>
+                            <Button Button size="sm" variant="primary" type="submit"><FontAwesomeIcon icon={faSave}/> AGREGAR</Button>
+                        </Card.Footer>
+                    </Form>
+                </Card>
+            </div>
+
   );
 };
 

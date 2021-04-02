@@ -2,6 +2,9 @@
 import React, { useState, useEffect } from "react";
 import { useHistory, useParams } from "react-router-dom";
 import { Link } from 'react-router-dom';
+import {Card,Table, ButtonGroup} from 'react-bootstrap';
+import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
+import {faEye, faEdit, faTrash, faFastBackward, faPlusSquare} from '@fortawesome/free-solid-svg-icons';
 import PersonasService from "../../services/PersonasService.js";
 
 const PersonaDetalle = () => {
@@ -54,74 +57,94 @@ const PersonaDetalle = () => {
      await PersonasService.update(id,persona);
    };
   return (
-    <div className="container">
-        <div className="py-4">
-        <h3 className="text-center mb-4">DETALLE PERSONA</h3>
-        <br></br>
-        <h4 className="text-left mb-4">DATOS PERSONALES</h4>
-        <table class="table border shadow">
-        <thead class="thead-dark">
-            <tr>
-              <th scope="col">NOMBRE</th>
-              <th scope="col">APELLIDO</th>
-              <th scope="col">DNI</th>
-              <th scope="col">DOMICILIO</th>
-              <th scope="col">LOCALIDAD</th>
-            </tr>
-          </thead>
-          <tbody>             
-              <tr>
-                <td>{persona.nombre}</td>
-                <td>{persona.apellido}</td>
-                <td>{persona.dni}</td>
-                <td>{persona.domicilio.calle} {persona.domicilio.numero}</td>
-                <td>{persona.domicilio.localidad.denominacion}</td>
-              </tr>
-          </tbody>
-        </table>
-        <br></br>
-        <td><h4 className="text-left mr-3">LIBROS</h4></td>
-        <td><Link class="btn btn-primary btn-sm" to={`/personas/add/libro/add/${persona.id}`}>AGREGAR LIBRO</Link>  </td>   
-        <br></br>
-        
-        <table class="table border shadow">
-        <thead class="thead-dark">
-            <tr>
-              <th scope="col">TITULO</th>
-              <th scope="col">FECHA</th>
-              <th scope="col">GENERO</th>
-              <th scope="col">PAGINAS</th>
-              <th scope="col">AUTORES</th>
-              <th scope="col">ACCION</th>
-            </tr>
-          </thead>        
-          <tbody>
-            {persona.libros.map((libro) => (
-              <tr>
-                <td>{libro.titulo}</td>
-                <td>{libro.fecha}</td>
-                <td>{libro.genero}</td>
-                <td>{libro.paginas}</td>
-                <td>
-                    {libro.autores.map((autor) => (
-                        <tr>{autor.nombre} {autor.apellido}</tr>
-                    ))}
-                </td>
-                <td>
-                    <Link class="btn btn-primary btn-sm mr-5" to={`/personas/detalle/libro/detalle/${persona.id}/${libro.id}`}>DETALLE</Link>
-                    <Link class="btn btn-danger btn-sm" onClick={() => deleteLibro(libro.id)}>ELIMINAR</Link>
-                </td>
-              </tr>
-              ))}
-          </tbody>
-        </table>
-        <br></br>
-        <br></br>
-        <div class="text-center">           
-            <Link class="btn btn-secondary btn-sm mr-5" to={`/personas`}>VOLVER</Link>
-            <Link class="btn btn-warning btn-sm mr-5" to={`/personas/edit/${persona.id}`}>EDITAR</Link>
-            <Link class="btn btn-danger btn-sm" onClick={() => deletePersona(persona.id)}>ELIMINAR</Link>
+    <div className="py-4">
+        <div >
+        <Card className="border border-dark bg-dark text-white">
+                    <Card.Header>
+                        <div style={{"textAlign":"center"}}>
+                        <strong> DETALLE PERSONA</strong>
+                        </div>                   
+                    </Card.Header>
+                    <Card.Body>
+                        <Table bordered hover striped variant="dark">
+                            <thead>
+                                <tr>
+                                    <th scope="col">NOMBRE</th>
+                                    <th scope="col">APELLIDO</th>
+                                    <th scope="col">DNI</th>
+                                    <th scope="col">DOMICILIO</th>
+                                    <th scope="col">LOCALIDAD</th>
+                                </tr>
+                              </thead>
+                              <tbody>              
+                                    <td>{persona.nombre}</td>
+                                    <td>{persona.apellido}</td>
+                                    <td>{persona.dni}</td>
+                                    <td>{persona.domicilio.calle} {persona.domicilio.numero}</td>
+                                    <td>{persona.domicilio.localidad.denominacion}</td>
+                              </tbody>
+                        </Table>
+                          </Card.Body>                
+                </Card>
         </div>
+        <br></br>
+        <div>
+        <Card className="border border-dark bg-dark text-white">
+        <Card.Header>
+                        <div style= {{"float":"left"}}>
+                          <strong>LIBROS</strong>
+                        </div>  
+                        <div style={{"float":"right"}}>
+                        <Link to={`/personas/add/libro/add/${persona.id}`} className="btn btn-sm btn-primary mr-2"><FontAwesomeIcon icon={faPlusSquare} /> AGREGAR LIBRO</Link>
+                        </div>                     
+        </Card.Header>
+        <Card.Body>
+            <Table bordered hover striped variant="dark">
+                  <thead class="thead-dark">
+                      <tr>
+                        <th scope="col">TITULO</th>
+                        <th scope="col">FECHA</th>
+                        <th scope="col">GENERO</th>
+                        <th scope="col">PAGINAS</th>
+                        <th scope="col">AUTORES</th>
+                        <th scope="col">ACCIONES</th>
+                      </tr>
+                  </thead>        
+                  <tbody>
+                    {persona.libros.map((libro) => (
+                      <tr>
+                        <td>{libro.titulo}</td>
+                        <td>{libro.fecha}</td>
+                        <td>{libro.genero}</td>
+                        <td>{libro.paginas}</td>
+                        <td>
+                            {libro.autores.map((autor) => (
+                                <div>{autor.nombre} {autor.apellido}</div>
+                            ))}
+                        </td>
+                        <td>
+                        <ButtonGroup>
+                            <Link class="btn btn-primary btn-sm mr-2" to={`/personas/detalle/libro/detalle/${persona.id}/${libro.id}`}><FontAwesomeIcon icon={faEye} /></Link>
+                            <Link class="btn btn-warning btn-sm mr-2" to={`/personas/libro/edit/${persona.id}/${libro.id}`}><FontAwesomeIcon icon={faEdit}/></Link>
+                            <Link class="btn btn-danger btn-sm" onClick={() => deleteLibro(libro.id)}><FontAwesomeIcon icon={faTrash}/></Link>
+                        </ButtonGroup>
+                        </td>
+                      </tr>
+                      ))}
+                  </tbody>
+            </Table> 
+        </Card.Body>               
+        </Card>
+        <br>
+        </br>
+        
+        </div>
+        <div style={{"textAlign":"center"}}>
+        <ButtonGroup>
+                      <Link class="btn btn-secondary btn-sm mr-3" to="/personas/"><FontAwesomeIcon icon={faFastBackward}/> VOLVER</Link>
+                      <Link class="btn btn-warning btn-sm mr-3" to={`/personas/edit/${persona.id}`}><FontAwesomeIcon icon={faEdit}/> EDITAR</Link>
+                      <Link class="btn btn-danger btn-sm" onClick={() => deletePersona(persona.id)}><FontAwesomeIcon icon={faTrash}/> ELIMINAR</Link>  
+         </ButtonGroup>
         </div>
       </div>
   );
